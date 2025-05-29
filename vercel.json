@@ -1,19 +1,10 @@
 {
-  "version": 2,
-  "name": "algorithm-complexity-visualizer",
-  "builds": [
+  "rewrites": [
     {
-      "src": "index.html",
-      "use": "@vercel/static"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
-  ],
-  "functions": {},
   "headers": [
     {
       "source": "/(.*)",
