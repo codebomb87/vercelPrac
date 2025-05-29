@@ -1,0 +1,52 @@
+{
+  "name": "algorithm-complexity-visualizer",
+  "version": "1.0.0",
+  "description": "Interactive tool for visualizing algorithm time complexity with real-time graphs and comparisons",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "build": "echo 'No build process needed for static HTML'",
+    "test": "echo 'No tests specified'",
+    "deploy": "vercel --prod",
+    "dev": "vercel dev",
+    "preview": "vercel"
+  },
+  "keywords": [
+    "algorithm",
+    "complexity",
+    "visualization",
+    "big-o",
+    "computer-science",
+    "education",
+    "interactive",
+    "chart",
+    "graph",
+    "performance"
+  ],
+  "author": {
+    "name": "Algorithm Complexity Visualizer Team",
+    "email": "contact@algorithm-visualizer.com"
+  },
+  "license": "MIT",
+  "homepage": "https://algorithm-complexity-visualizer.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/algorithm-complexity-visualizer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/algorithm-complexity-visualizer/issues"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ],
+  "devDependencies": {
+    "serve": "^14.0.0",
+    "vercel": "^37.0.0"
+  }
+} 

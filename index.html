@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algorithm Complexity - 시간 복잡도 시각화</title>
+    
+    <!-- SEO 메타데이터 -->
+    <meta name="description" content="알고리즘의 시간 복잡도를 실시간으로 시각화하고 분석하는 도구입니다. O(1), O(log n), O(n), O(n log n), O(n²), O(2ⁿ) 등 다양한 복잡도를 직관적으로 비교할 수 있습니다.">
+    <meta name="keywords" content="알고리즘, 시간복잡도, 빅오표기법, 성능분석, 시각화, Big O, 컴퓨터과학">
+    <meta name="author" content="Algorithm Complexity Visualizer">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="Korean">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://algorithm-complexity-visualizer.loveable.app/">
+    <meta property="og:title" content="Algorithm Complexity - 시간 복잡도 시각화">
+    <meta property="og:description" content="알고리즘의 시간 복잡도를 실시간으로 시각화하고 분석하는 도구">
+    <meta property="og:image" content="https://algorithm-complexity-visualizer.loveable.app/og-image.png">
+    <meta property="og:site_name" content="Algorithm Complexity Visualizer">
+    <meta property="og:locale" content="ko_KR">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://algorithm-complexity-visualizer.loveable.app/">
+    <meta property="twitter:title" content="Algorithm Complexity - 시간 복잡도 시각화">
+    <meta property="twitter:description" content="알고리즘의 시간 복잡도를 실시간으로 시각화하고 분석하는 도구">
+    <meta property="twitter:image" content="https://algorithm-complexity-visualizer.loveable.app/og-image.png">
+    
+    <!-- PWA 메타데이터 -->
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="복잡도 시각화">
+    
+    <!-- 파비콘 -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+    
+    <!-- 성능 최적화 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    
+    <!-- 외부 CSS 파일들 -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/chart.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <div class="background-pattern"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Algorithm Complexity</h1>
+            <p class="subtitle">실시간 시간 복잡도 시각화 및 분석</p>
+        </div>
+        
+        <div class="main-grid">
+            <div class="chart-section">
+                <h2 class="section-title">📈 복잡도 성장 곡선</h2>
+                <div class="chart-container">
+                    <svg class="chart-svg" id="complexityChart"></svg>
+                </div>
+            </div>
+            
+            <div class="controls-section">
+                <h2 class="section-title">🎛️ 컨트롤</h2>
+                
+                <div class="control-group">
+                    <label class="control-label">입력 크기 (n)</label>
+                    <div class="slider-container">
+                        <input type="range" id="nSlider" class="slider" min="1" max="1000" value="100">
+                        <div class="value-display">
+                            <span class="current-value" id="nValue">100</span>
+                            <span class="range-info">1 ~ 1,000</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">X축 최대 범위</label>
+                    <div class="slider-container">
+                        <input type="range" id="xMaxSlider" class="slider" min="100" max="10000" value="1000" step="100">
+                        <div class="value-display">
+                            <span class="current-value" id="xMaxValue">1,000</span>
+                            <span class="range-info">100 ~ 10,000</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">Y축 최대 범위</label>
+                    <div class="slider-container">
+                        <input type="range" id="yMaxSlider" class="slider" min="100" max="100000" value="10000" step="100">
+                        <div class="value-display">
+                            <span class="current-value" id="yMaxValue">10,000</span>
+                            <span class="range-info">100 ~ 100,000</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">표시 모드</label>
+                    <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                        <button class="toggle-button active" id="logScale">로그 스케일</button>
+                        <button class="toggle-button" id="linearScale">선형 스케일</button>
+                    </div>
+                </div>
+                
+                <div class="complexity-legend">
+                    <div class="legend-item" data-complexity="O(1)">
+                        <div class="legend-color" style="background: #4ade80;"></div>
+                        <span class="legend-text">O(1) - 상수</span>
+                    </div>
+                    <div class="legend-item" data-complexity="O(log n)">
+                        <div class="legend-color" style="background: #22d3ee;"></div>
+                        <span class="legend-text">O(log n) - 로그</span>
+                    </div>
+                    <div class="legend-item" data-complexity="O(n)">
+                        <div class="legend-color" style="background: #fbbf24;"></div>
+                        <span class="legend-text">O(n) - 선형</span>
+                    </div>
+                    <div class="legend-item" data-complexity="O(n log n)">
+                        <div class="legend-color" style="background: #fb923c;"></div>
+                        <span class="legend-text">O(n log n) - 선형로그</span>
+                    </div>
+                    <div class="legend-item" data-complexity="O(n²)">
+                        <div class="legend-color" style="background: #f87171;"></div>
+                        <span class="legend-text">O(n²) - 이차</span>
+                    </div>
+                    <div class="legend-item" data-complexity="O(2ⁿ)">
+                        <div class="legend-color" style="background: #a78bfa;"></div>
+                        <span class="legend-text">O(2ⁿ) - 지수</span>
+                    </div>
+                </div>
+                
+                <div class="current-calculation">
+                    <div class="calc-title">현재 n = <span id="currentN">100</span>일 때</div>
+                    <div class="calc-results" id="calcResults">
+                        <!-- 동적으로 생성됩니다 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stats-card">
+                <h2 class="section-title">📊 연산 횟수 비교</h2>
+                <table class="performance-table">
+                    <thead>
+                        <tr>
+                            <th>복잡도</th>
+                            <th>n=10</th>
+                            <th>n=100</th>
+                            <th>n=1K</th>
+                            <th>n=10K</th>
+                            <th>n=100K</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>O(1)</strong></td>
+                            <td class="good">1</td>
+                            <td class="good">1</td>
+                            <td class="good">1</td>
+                            <td class="good">1</td>
+                            <td class="good">1</td>
+                        </tr>
+                        <tr>
+                            <td><strong>O(log n)</strong></td>
+                            <td class="good">3</td>
+                            <td class="good">7</td>
+                            <td class="good">10</td>
+                            <td class="good">13</td>
+                            <td class="good">17</td>
+                        </tr>
+                        <tr>
+                            <td><strong>O(n)</strong></td>
+                            <td class="good">10</td>
+                            <td class="ok">100</td>
+                            <td class="ok">1K</td>
+                            <td class="ok">10K</td>
+                            <td class="ok">100K</td>
+                        </tr>
+                        <tr>
+                            <td><strong>O(n log n)</strong></td>
+                            <td class="good">30</td>
+                            <td class="ok">700</td>
+                            <td class="ok">10K</td>
+                            <td class="ok">130K</td>
+                            <td class="bad">1.7M</td>
+                        </tr>
+                        <tr>
+                            <td><strong>O(n²)</strong></td>
+                            <td class="ok">100</td>
+                            <td class="bad">10K</td>
+                            <td class="bad">1M</td>
+                            <td class="terrible">100M</td>
+                            <td class="terrible">10B</td>
+                        </tr>
+                        <tr>
+                            <td><strong>O(2ⁿ)</strong></td>
+                            <td class="bad">1K</td>
+                            <td class="terrible">2¹⁰⁰</td>
+                            <td class="terrible">2¹⁰⁰⁰</td>
+                            <td class="terrible">∞</td>
+                            <td class="terrible">∞</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="stats-card">
+                <h2 class="section-title">⏱️ 실행 시간 예상</h2>
+                <table class="performance-table">
+                    <thead>
+                        <tr>
+                            <th>복잡도</th>
+                            <th>n=10</th>
+                            <th>n=100</th>
+                            <th>n=1K</th>
+                            <th>n=10K</th>
+                            <th>n=100K</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>O(1)</strong></td>
+                            <td class="good">1ns</td>
+                            <td class="good">1ns</td>
+                            <td class="good">1ns</td>
+                            <td class="good">1ns</td>
+                            <td class="good">1ns</td>
+                        </tr>
+                        <tr>
+                            <td><strong>O(log n)</strong></td>
+                            <td class="good">3ns</td>
+                            <td class="good">7ns</td>
+                            <td class="good">10ns</td>
+                            <td class="good">13ns</td>
+                            <td class="good">17ns</td>
+                        </tr>
+                        <tr>
+                            <td><strong>O(n)</strong></td>
+                            <td class="good">10ns</td>
+                            <td class="good">100ns</td>
+                            <td class="good">1μs</td>
+                            <td class="ok">10μs</td>
+                            <td class="ok">100μs</td>
+                        </tr>
+                        <tr>
+                            <td><strong>O(n log n)</strong></td>
+                            <td class="good">30ns</td>
+                            <td class="good">700ns</td>
+                            <td class="ok">10μs</td>
+                            <td class="ok">130μs</td>
+                            <td class="ok">1.7ms</td>
+                        </tr>
+                        <tr>
+                            <td><strong>O(n²)</strong></td>
+                            <td class="good">100ns</td>
+                            <td class="ok">10μs</td>
+                            <td class="ok">1ms</td>
+                            <td class="bad">100ms</td>
+                            <td class="bad">10s</td>
+                        </tr>
+                        <tr>
+                            <td><strong>O(2ⁿ)</strong></td>
+                            <td class="ok">1μs</td>
+                            <td class="terrible">4×10²²년</td>
+                            <td class="terrible">∞</td>
+                            <td class="terrible">∞</td>
+                            <td class="terrible">∞</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript 파일들 -->
+    <script src="js/constants.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/chart.js"></script>
+    <script src="js/controls.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html> 
